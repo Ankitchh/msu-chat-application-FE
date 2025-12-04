@@ -3,6 +3,7 @@ import Home from "./pages/Home";
 import Login from "./pages/auth/Login";
 import Register from "./pages/auth/Register";
 import VerifyOtp from "./pages/auth/VerifyOtp";
+import TeacherRegister from "./pages/auth/TeacherRegister";
 
 function App() {
   return (
@@ -11,6 +12,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/teacher-register" element={<TeacherRegister />} />
         <Route path="/verify-otp" element={<VerifyOtp />} />
       </Routes>
     </div>
