@@ -6,9 +6,7 @@ export default function Home() {
   return (
     <div className="dark:bg-zinc-700 min-h-screen p-4">
       <h1>Home</h1>
-      <button onClick={() => setTheme(theme === "dark" ? "light" : "dark")}>
-        Change theme
-      </button>
+      <button onClick={() => setTheme(!theme)}>Change theme</button>
     </div>
   );
 }
