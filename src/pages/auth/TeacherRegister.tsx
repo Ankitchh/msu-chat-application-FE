@@ -1,16 +1,15 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
-export default function Register() {
+export default function TeacherRegister() {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     password: "",
-    registrationNo: "",
     phoneNumber: "",
-    semester: "",
-    department: "",
-    userRole: "STUDENT",
+    registrationNo: "",
+    degsination: "",
+    userRole: "STAFF",
     gender: "MALE",
   });
 
@@ -43,14 +42,11 @@ export default function Register() {
           <h2 className="mt-4 text-2xl/9 font-extrabold text-gray-900 dark:text-white">
             Join the MSU Family
           </h2>
-          <p className="text-xs text-blue-600 font-bold">
-            <Link to={"/teacher-register"}>Are You a faculty? click here</Link>
-          </p>
         </div>
 
         {/* Form Container */}
-        <div className="mt-3 sm:mx-auto sm:w-full sm:max-w-md bg-white dark:bg-gray-950 p-8 rounded-xl dark:border-gray-800">
-          <form onSubmit={handelRegisterSubmit} className="space-y-6">
+        <div className=" sm:mx-auto sm:w-full sm:max-w-md bg-white dark:bg-gray-950 p-8 rounded-xl dark:border-gray-800">
+          <form onSubmit={handelRegisterSubmit} className="space-y-3">
             {/*  FULL NAME */}
             <div>
               <label
@@ -112,27 +108,6 @@ export default function Register() {
               />
             </div>
 
-            {/*  REGISTRATION NUMBER */}
-            <div>
-              <label
-                htmlFor="registrationNo"
-                className="block text-sm font-medium text-gray-700 dark:text-gray-300"
-              >
-                Registration Number
-              </label>
-              <input
-                id="registrationNo"
-                name="registrationNo"
-                type="text"
-                placeholder="2304100000XX"
-                maxLength={15}
-                value={formData.registrationNo}
-                onChange={handleChange}
-                required
-                className={inputClass}
-              />
-            </div>
-
             {/* PHONE NUMBER */}
             <div>
               <label
@@ -154,69 +129,45 @@ export default function Register() {
               />
             </div>
 
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-3 sm:gap-6">
-              {/* SEMESTER */}
-              <div>
-                <label
-                  htmlFor="semester"
-                  className="block text-sm font-medium text-gray-700 dark:text-gray-300"
-                >
-                  Semester
-                </label>
-                <input
-                  id="semester"
-                  name="semester"
-                  type="text"
-                  placeholder="5"
-                  value={formData.semester}
-                  onChange={handleChange}
-                  required
-                  className={inputClass}
-                />
-              </div>
+            {/*  REGISTRATION NUMBER */}
+            <div>
+              <label
+                htmlFor="registrationNo"
+                className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+              >
+                Registration Number
+              </label>
+              <input
+                id="registrationNo"
+                name="registrationNo"
+                type="text"
+                maxLength={15}
+                placeholder="2304100000XX"
+                value={formData.registrationNo}
+                onChange={handleChange}
+                required
+                className={inputClass}
+              />
+            </div>
 
-              {/* DEPARTMENT */}
-              <div>
-                <label
-                  htmlFor="department"
-                  className="block text-sm font-medium text-gray-700 dark:text-gray-300"
-                >
-                  Department
-                </label>
-                <input
-                  id="department"
-                  name="department"
-                  type="text"
-                  placeholder="BCA"
-                  value={formData.department}
-                  onChange={handleChange}
-                  required
-                  className={inputClass}
-                />
-              </div>
-
-              {/* GENDER (Dropdown) */}
-              <div>
-                <label
-                  htmlFor="gender"
-                  className="block text-sm font-medium text-gray-700 dark:text-gray-300"
-                >
-                  Gender
-                </label>
-                <select
-                  id="gender"
-                  name="gender"
-                  value={formData.gender}
-                  onChange={handleChange}
-                  required
-                  // The select tag needs to use the same class for consistent styling
-                  className={inputClass}
-                >
-                  <option value="MALE">Male</option>
-                  <option value="FEMALE">Female</option>
-                  <option value="OTHERS">Others</option>
-                </select>
-              </div>
+            {/* DEGSINATION */}
+            <div>
+              <label
+                htmlFor="degsination"
+                className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+              >
+                Degsination
+              </label>
+              <input
+                id="degsination"
+                name="degsination"
+                type="text"
+                placeholder="IT FACULTY"
+                value={formData.degsination}
+                onChange={handleChange}
+                required
+                className={inputClass}
+              />
             </div>
 
             {/*  SUBMIT BUTTON */}
