@@ -1,14 +1,25 @@
 import { useState, useEffect } from "react";
+import { useUser } from "../../contexts/userContext";
+import { verifyOtpApi } from "../../api/auth";
+import { useNavigate } from "react-router-dom";
+import Loader from "../../components/Loader";
 
 export default function VerifyOtp() {
+  const { login } = useUser();
+
   const [otp, setOtp] = useState(Array(6).fill(""));
   const [resendTimer, setResendTimer] = useState(120);
   const [disabled, setDisabled] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
 
-  const handleOtpVerify = (e: React.FormEvent) => {
+  const handleOtpVerify = async (e: React.FormEvent) => {
     e.preventDefault();
-    alert("OTP Submitted!");
-    console.log("OTP:", otp.join(""));
+    setIsLoading(true);
+    const user = await verifyOtpApi(otp.toString());
+    login(user);
+    setIsLoading(false);
+    navigate("/");
   };
 
   // Countdown timer - runs only when disabled becomes true
@@ -52,6 +63,10 @@ export default function VerifyOtp() {
     }
   };
 
+  if (isLoading) {
+    <Loader />;
+  }
+
   return (
     <div className="relative flex min-h-screen flex-col justify-center overflow-hidden bg-gray-100 py-12 dark:bg-zinc-900">
       <div className="relative bg-white dark:bg-gray-950 px-8 pt-10 pb-9 shadow-xl mx-auto w-full max-w-lg rounded-2xl">
@@ -60,7 +75,8 @@ export default function VerifyOtp() {
           <div className="text-center flex flex-col space-y-2">
             <h1 className="text-2xl font-semibold">Email Verification</h1>
             <p className="text-sm text-gray-500">
-              We have sent a code to your email <b>ba**@dipainhouse.com</b>
+              We have sent a code to your email{" "}
+              <b>{localStorage.getItem("email")}</b>
             </p>
           </div>
 

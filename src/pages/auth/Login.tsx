@@ -1,8 +1,14 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useUser } from "../../contexts/userContext";
+import { loginApi } from "../../api/auth";
+import Loader from "../../components/Loader";
 
 export default function Login() {
   const [formData, setFormData] = useState({ email: "", password: "" });
+  const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
+  const { login } = useUser();
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -12,9 +18,16 @@ export default function Login() {
 
   const handelLoginSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    alert("check console register user with data:\n");
-    console.log(formData);
+    setIsLoading(true);
+    const user = await loginApi(formData.email, formData.password);
+    login(user);
+    setIsLoading(false);
+    navigate("/");
   };
+
+  if (isLoading) {
+    return <Loader />;
+  }
 
   return (
     <>
