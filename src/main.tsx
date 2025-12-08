@@ -4,12 +4,15 @@ import "./index.css";
 import { BrowserRouter } from "react-router-dom";
 import App from "./App.tsx";
 import { ThemeProvider } from "./contexts/themeProvider.tsx";
+import { UserProvider } from "./contexts/userContext.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <BrowserRouter>
+    <BrowserRouter basename="msu-chat-application-FE">
       <ThemeProvider>
-        <App />
+        <UserProvider>
+          <App />
+        </UserProvider>
       </ThemeProvider>
     </BrowserRouter>
   </StrictMode>

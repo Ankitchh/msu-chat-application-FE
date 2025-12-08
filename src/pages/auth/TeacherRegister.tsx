@@ -1,5 +1,7 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { registerApi } from "../../api/auth";
+import Loader from "../../components/Loader";
 
 export default function TeacherRegister() {
   const [formData, setFormData] = useState({
@@ -12,6 +14,8 @@ export default function TeacherRegister() {
     userRole: "STAFF",
     gender: "MALE",
   });
+  const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -21,12 +25,19 @@ export default function TeacherRegister() {
 
   const handelRegisterSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    alert("check console register user with data:\n");
-    console.log(formData);
+    setIsLoading(true);
+    localStorage.setItem("email", formData.email);
+    await registerApi(formData);
+    setIsLoading(false);
+    navigate("/verify-otp");
   };
 
   const inputClass =
     "block w-full rounded-lg border border-gray-300 dark:outline-none dark:border-gray-700 bg-white dark:bg-gray-800 px-4 py-2.5 text-sm text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 shadow-sm transition duration-150 ease-in-out focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50";
+
+  if (isLoading) {
+    <Loader />;
+  }
 
   return (
     <>
@@ -156,7 +167,7 @@ export default function TeacherRegister() {
                 htmlFor="degsination"
                 className="block text-sm font-medium text-gray-700 dark:text-gray-300"
               >
-                Degsination
+                Designation
               </label>
               <input
                 id="degsination"
