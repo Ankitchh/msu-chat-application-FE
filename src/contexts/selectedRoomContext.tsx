@@ -16,6 +16,8 @@ const SelectedRoomContext = createContext<SelectedRoomContextType | undefined>(
   undefined
 );
 
+
+
 export const SelectedRoomProvider = ({ children }: { children: ReactNode }) => {
   const [selectedRoom, setSelectedRoom] = useState<SelectedRoom | null>(null);
 

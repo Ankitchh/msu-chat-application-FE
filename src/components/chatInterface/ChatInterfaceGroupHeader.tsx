@@ -1,15 +1,12 @@
-import {  Ellipsis, UserRound } from "lucide-react";
-import { useSelectedRoom } from "../contexts/selectedRoomContext";
-
-
+import { Ellipsis, UserRound } from "lucide-react";
+import { useSelectedRoom } from "../../contexts/selectedRoomContext";
 
 const ChatInterfaceGroupHeader = () => {
+  const { selectedRoom } = useSelectedRoom();
+  if (selectedRoom === null) {
+    return <div></div>;
+  }
 
-   const {selectedRoom} = useSelectedRoom();
-    if (selectedRoom === null) { 
-      return <div></div>;
-    }
-  
   return (
     <div className="chat-interface-header w-full h-[10vh]  flex items-center justify-between border-b border-[#484D73]">
       <div className="chat-interface-header-user-detals w-1/4 h-full  flex items-center gap-3">
@@ -20,7 +17,6 @@ const ChatInterfaceGroupHeader = () => {
             alt="User profile"
             className="w-full h-full rounded-full"
           /> */}
-
         </div>
         <div className="chat-interface-header-user-name-status">
           <div className="chat-interface-header-user-name">

@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { useSelectedRoom } from "../contexts/selectedRoomContext";
+import { useSelectedRoom } from "../../contexts/selectedRoomContext";
 
 const ChatBoxUser = () => {
   const chatRef = useRef<HTMLDivElement | null>(null);

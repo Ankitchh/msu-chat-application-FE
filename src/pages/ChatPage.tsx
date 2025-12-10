@@ -1,11 +1,9 @@
-import ChatInterface from "../components/ChatInterface";
-import Sidebar from "../components/Sidebar";
+import ChatInterface from "../components/chatInterface/ChatInterface";
+import Sidebar from "../components/sidebar/Sidebar";
 import { useSelectedRoom } from "../contexts/selectedRoomContext";
 
 const ChatPage = () => {
-
   const { selectedRoom } = useSelectedRoom();
-
 
   return (
     <div>
@@ -26,6 +24,6 @@ const ChatPage = () => {
       </div>
     </div>
   );
-}
+};
 
-export default ChatPage
+export default ChatPage;
