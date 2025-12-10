@@ -29,8 +29,12 @@ const SidebarUserCard = () => {
           onClick={() => {
             openRoom(
               room.id,
-              room.receiver.imageUrl,
-              room.receiver.name,
+              user.name === room.receiver.name
+                ? room.sender.imageUrl
+                : room.receiver.imageUrl,
+              user.name === room.receiver.name
+                ? room.sender.name
+                : room.receiver.name,
               "single"
             );
           }}

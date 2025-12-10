@@ -19,7 +19,14 @@ const NewChatUserlist = () => {
     <>
       {singleChatRoom.map((room) => (
         
-    <div onClick={()=>{openRoom(room.id, room.receiver.imageUrl,room.receiver.name,"single");}}  key={room.id} className="new-chat-user-list-user-card w-full h-15 p-1 hover:bg-[#484D73] border-b border-[#484D73] ">
+    <div onClick={()=>{openRoom(
+      room.id,
+      user.name === room.receiver.name
+        ? room.sender.imageUrl
+        : room.receiver.imageUrl,
+      user.name === room.receiver.name ? room.sender.name : room.receiver.name,
+      "single"
+    );}}  key={room.id} className="new-chat-user-list-user-card w-full h-15 p-1 hover:bg-[#484D73] border-b border-[#484D73] ">
       <div className="user-card-user-details w-full h-3/4  p-0.5 flex gap-2 items-center">
         <div className="user-card-user-details-avtar w-2/12 h-full  rounded-full flex items-center justify-between">
           {/* <UserRound strokeWidth={0.75} className="w-full h-full" /> */}

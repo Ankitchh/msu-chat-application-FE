@@ -1,19 +1,23 @@
 import { ChevronLeft, UserRoundSearch, Users } from "lucide-react";
 import NewChatUserlist from "./NewChatUserlist";
+import CreateGroup from "../CreateGroup";
+import { useState } from "react";
 
 const NewChat = ({ openNewChat, setOpenNewChat }: { openNewChat: string; setOpenNewChat: React.Dispatch<React.SetStateAction<string>> }) => {
   
-  
+  const [openCreateGroup, setOpenCreateGroup] =  useState<string>("closed");
 
   return (
     <>
-      
+      <CreateGroup openCreateGroup={openCreateGroup} setOpenCreateGroup={setOpenCreateGroup} />
       <div
         className={`h-screen ${
           openNewChat === "open"
             ? "w-0 overflow-hidden opacity-0"
-            : "w-[23vw] p-2 "
-        } bg-[#333657] text-white border-r border-[#484D73] transition-all duration-500 `}
+            : "w-[23vw] p-2 " 
+          }  bg-[#333657] text-white border-r border-[#484D73] transition-all duration-500
+          ${openCreateGroup === "open" ? "w-0 overflow-hidden opacity-0" : " "}
+          `}
       >
         <div className="new-chat w-full h-full p-2  ">
           <div className="new-chat-head w-full h-8 mb-1 flex items-center gap-4 ">
@@ -43,7 +47,7 @@ const NewChat = ({ openNewChat, setOpenNewChat }: { openNewChat: string; setOpen
               />
             </label>
           </div>
-          <div className="new-chat-group w-full h-8 mb-2 border-b border-gray-400 flex items-center gap-4 pb-4 p-1 active:text-[#52526b] duration-700 hover:cursor-pointer ">
+          <div onClick={()=>{setOpenCreateGroup("open")}} className="new-chat-group w-full h-8 mb-2 border-b border-gray-400 flex items-center gap-4 pb-4 p-1 active:text-[#52526b] duration-700 hover:cursor-pointer ">
             <div className="active:text-[#52526b] duration-700 hover:cursor-pointer flex items-center ">
               <Users strokeWidth={1} /> <span>+</span>
             </div>
