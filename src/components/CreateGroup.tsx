@@ -57,19 +57,30 @@ const CreateGroup = ({ openCreateGroup, setOpenCreateGroup }: { openCreateGroup:
   if (loading) return <div></div>;
 
   return (
-    <>
+    <div>
       <div
-        className={`${openCreateGroup === "open" ? "w-[23vw] p-2 " : "w-0 p-0 overflow-hidden hidden opacity-0"} relative create-group-component h-screen overflow-hidden
-          w-[23vw] p-2 bg-[#333657] text-white border-r border-[#484D73] transition-all duration-500 `}
+        className={`${
+          openCreateGroup === "open"
+            ? "w-[23vw] p-2 "
+            : "w-0 p-0 opacity-0"
+        } relative create-group-component h-screen overflow-hidden
+            bg-[#333657] text-white border-r border-[#484D73] transition-all duration-500 `}
       >
-        <div className="create-group w-full h-full p-2">
+        <div
+          className={`create-group  w-full h-full p-2 `}
+        >
           {/* Header */}
           <div className="create-group-head w-full h-9 mb-3 flex items-center gap-4 border-none bg-[#414568] rounded-full ">
             <label
               htmlFor="search"
               className="w-full h-full relative flex items-center "
             >
-              <button onClick={() => { setOpenCreateGroup("closed") }}  className="active:text-[#52526b] duration-700 hover:cursor-pointer ">
+              <button
+                onClick={() => {
+                  setOpenCreateGroup("closed");
+                }}
+                className="active:text-[#52526b] duration-700 hover:cursor-pointer "
+              >
                 <ChevronLeft />
               </button>
               <input
@@ -100,7 +111,12 @@ const CreateGroup = ({ openCreateGroup, setOpenCreateGroup }: { openCreateGroup:
                     key={m.roomId}
                     className="relative flex gap-2 items-center bg-[#414568] rounded-xl p-3"
                   >
-                    <button onClick={()=>{removeMember(m)}} className="absolute text-lg -top-4 p-1 right-2 hover:cursor-pointer">
+                    <button
+                      onClick={() => {
+                        removeMember(m);
+                      }}
+                      className="absolute text-lg -top-4 p-1 right-2 hover:cursor-pointer"
+                    >
                       _
                     </button>
                     <img
@@ -147,13 +163,18 @@ const CreateGroup = ({ openCreateGroup, setOpenCreateGroup }: { openCreateGroup:
           </div>
         </div>
 
-        <div onClick={()=>{makeNewGroup()}} className="create-group-button w-full h-18 mt-5 absolute bottom-0 left-0 flex items-center justify-center bg-[#333657] ">
+        <div
+          onClick={() => {
+            makeNewGroup();
+          }}
+          className="create-group-button w-full h-18 mt-5 absolute bottom-0 left-0 flex items-center justify-center bg-[#333657] "
+        >
           <h1 className="w-[20vw] h-8 p-4 flex items-center justify-center active:text-[#52526b] duration-700 border border-gray-400 rounded hover:cursor-pointer shadow-md shadow-gray-500 bg-[#414568]">
             Create Group
           </h1>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 
