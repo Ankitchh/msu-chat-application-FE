@@ -1,15 +1,17 @@
-import { UserRoundSearch } from "lucide-react";
+import { Settings, UserRoundSearch } from "lucide-react";
 import SidebarUserCard from "./SidebarUserCard";
 import SidebarGroupCard from "./SidebarGroupCard";
 import NewChat from "../newChat/NewChat";
 import { useState } from "react";
+import UserProfile from "../profile/UserProfile";
 
 const Sidebar = () => {
   const [openNewChat, setOpenNewChat] = useState<string>("open");
 
   return (
     <>
-      <NewChat openNewChat={openNewChat} setOpenNewChat={setOpenNewChat} />
+      <UserProfile/>
+      {/* <NewChat openNewChat={openNewChat} setOpenNewChat={setOpenNewChat} />
       <div
         className={`h-screen  ${
           openNewChat === "open"
@@ -58,8 +60,13 @@ const Sidebar = () => {
         <div className="sidebar-users-list w-full h-[73vh] overflow-auto scrollbar-hide">
           <SidebarUserCard />
           <SidebarGroupCard />
+          <div className="w-full h-20"></div>
         </div>
-      </div>
+        <div className="sidebar-setting text-[#8A8BE4] w-full bg-[#333657] pt-2 h-10 flex items-center justify-start px-3 gap-3 hover:cursor-pointer border-t border-[#484D73] active:text-[#52526b] duration-500">
+          <Settings />
+          <h3>Settings</h3>
+        </div>
+      </div> */}
     </>
   );
 };

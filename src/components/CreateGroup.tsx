@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { ChevronLeft, X } from "lucide-react";
 import { useRoomContext } from "../contexts/roomContext";
 import { useUser } from "../contexts/userContext";
+import { ChevronLeft } from "lucide-react";
 
 const CreateGroup = ({ openCreateGroup, setOpenCreateGroup }: { openCreateGroup: string; setOpenCreateGroup: React.Dispatch<React.SetStateAction<string>> }) => {
 
@@ -22,11 +22,11 @@ const CreateGroup = ({ openCreateGroup, setOpenCreateGroup }: { openCreateGroup:
       const formatted = singleChatRoom.map((room) => ({
         roomId: room.id,
         imageUrl:
-          user.name === room.receiver.name
+          user?.name === room.receiver.name
             ? room.sender.imageUrl
             : room.receiver.imageUrl,
         name:
-          user.name === room.receiver.name
+          user?.name === room.receiver.name
             ? room.sender.name
             : room.receiver.name,
         type: "single",

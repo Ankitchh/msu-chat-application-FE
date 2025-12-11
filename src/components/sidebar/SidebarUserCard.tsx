@@ -20,7 +20,7 @@ const SidebarUserCard = () => {
   // console.log(user);
 
   if (loading) {
-    return <div></div>;
+    return <div className="w-full p-3 text-2xl">Loading...</div>;
   }
   return (
     <>
@@ -29,10 +29,10 @@ const SidebarUserCard = () => {
           onClick={() => {
             openRoom(
               room.id,
-              user.name === room.receiver.name
+              user?.name === room.receiver.name
                 ? room.sender.imageUrl
                 : room.receiver.imageUrl,
-              user.name === room.receiver.name
+              user?.name === room.receiver.name
                 ? room.sender.name
                 : room.receiver.name,
               "single"
@@ -46,7 +46,7 @@ const SidebarUserCard = () => {
               {/* <UserRound strokeWidth={0.75} className="w-full h-full" /> */}
               <img
                 src={
-                  user.name === room.receiver.name
+                  user?.name === room.receiver.name
                     ? room.sender.imageUrl
                     : room.receiver.imageUrl
                 }
@@ -57,7 +57,7 @@ const SidebarUserCard = () => {
 
             <div className="user-card-user-details-name w-7/12 h-full  ">
               <h2 className="w-full h-full flex items-center justify-start pl-1">
-                {user.name === room.receiver.name
+                {user?.name === room.receiver.name
                   ? room.sender.name
                   : room.receiver.name}
               </h2>
