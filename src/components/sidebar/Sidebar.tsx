@@ -7,17 +7,20 @@ import UserProfile from "../profile/UserProfile";
 
 const Sidebar = () => {
   const [openNewChat, setOpenNewChat] = useState<string>("open");
+  const [settings, SetSettings] = useState<boolean>(false);
 
   return (
     <>
-      <UserProfile/>
-      {/* <NewChat openNewChat={openNewChat} setOpenNewChat={setOpenNewChat} />
+      <UserProfile settings={settings} SetSettings={SetSettings} />
+      <NewChat openNewChat={openNewChat} setOpenNewChat={setOpenNewChat} />
       <div
         className={`h-screen  ${
-          openNewChat === "open"
+          (openNewChat === "open" && !settings)
             ? "w-[23vw] p-2"
             : "w-0 overflow-hidden opacity-0"
-        } transition-all duration-500 bg-[#333657]  text-white border-r border-[#484D73]`}
+        } 
+          
+        transition-all duration-500 bg-[#333657]  text-white border-r border-[#484D73]`}
       >
         <div className={`sidebar-header w-full  h-36`}>
           <div className="sidebar-header-top w-full h-1/2  flex justify-between items-center">
@@ -62,11 +65,16 @@ const Sidebar = () => {
           <SidebarGroupCard />
           <div className="w-full h-20"></div>
         </div>
-        <div className="sidebar-setting text-[#8A8BE4] w-full bg-[#333657] pt-2 h-10 flex items-center justify-start px-3 gap-3 hover:cursor-pointer border-t border-[#484D73] active:text-[#52526b] duration-500">
+        <div
+          onClick={() => {
+            SetSettings(true);
+          }}
+          className="sidebar-setting text-[#8A8BE4] w-full bg-[#333657] pt-2 h-10 flex items-center justify-end px-3 gap-3  hover:cursor-pointer border-t border-[#484D73] active:text-[#52526b] duration-500"
+        >
           <Settings />
           <h3>Settings</h3>
         </div>
-      </div> */}
+      </div>
     </>
   );
 };

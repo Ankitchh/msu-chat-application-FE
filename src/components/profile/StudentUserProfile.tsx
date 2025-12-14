@@ -1,7 +1,11 @@
 import { BookmarkCheck, BookmarkX, ChevronLeft, LogOut, Pen } from "lucide-react";
 import { useUser } from "../../contexts/userContext";
+import { useState } from "react";
 
 const StudentUserProfile = () => {
+
+  const [editProfile, setEditProfile] = useState(false);
+  
 
   const { user } = useUser();
 
@@ -25,12 +29,6 @@ const StudentUserProfile = () => {
   if (!user) {
     return (
       <>
-        <div className="new-chat-head text-[#8A8BE4] px-2 w-full h-8 my-1 flex items-center gap-2  active:text-[#52526b] duration-700 hover:cursor-pointer ">
-          <button className=" hover:cursor-pointer ">
-            <ChevronLeft />
-          </button>
-          <div className="text-xl">Profile</div>
-        </div>
         <div className=" p-5 w-full h-20 text-gray-400 text-2xl">
           Loading Profile...
         </div>
@@ -40,12 +38,7 @@ const StudentUserProfile = () => {
 
   return (
     <>
-      <div className="new-chat-head px-2 text-[#8A8BE4] w-full h-8 my-1 flex items-center gap-2 active:text-[#52526b] duration-700 hover:cursor-pointer ">
-        <button className=" hover:cursor-pointer ">
-          <ChevronLeft />
-        </button>
-        <div className="text-xl">Profile</div>
-      </div>
+     
       <div className=" p-5 w-full h-1/2 flex flex-col items-center justify-between">
         <img
           src={currentUser.imageUrl}
@@ -102,20 +95,38 @@ const StudentUserProfile = () => {
             className="w-4/6 h-10 text-left  focus:outline-none p-2 text-gray-400"
           />
         </div>
-        {/* <div className="w-full flex items-center gap-2 mr-2 text-[#8A8BE4] justify-center mt-5 active:text-[#52526b] duration-700 hover:cursor-pointer shadow-lg p-2">
-          <Pen strokeWidth={1} />
-          <button className="hover:cursor-pointer">Edit Profile</button>
-        </div> */}
-        <div className="w-full flex items-center gap-2 mr-2 text-[#8A8BE4] justify-center mt-5 ">
-          <div className="w-25 justify-center flex items-center gap-2 active:text-[#52526b] duration-700 hover:cursor-pointer shadow-lg p-2">
-            <BookmarkX strokeWidth={1} />
-            <button className="hover:cursor-pointer">Cancle</button>
+        {!editProfile ? (
+          <div
+            onClick={() => {
+              setEditProfile(true);
+            }}
+            className="w-full flex items-center gap-2 mr-2 text-[#8A8BE4] justify-center mt-5 active:text-[#52526b] duration-700 hover:cursor-pointer shadow-lg p-2"
+          >
+            <Pen strokeWidth={1} />
+            <button className="hover:cursor-pointer ">Edit Profile</button>
           </div>
-          <div className="w-25 justify-center flex items-center gap-2 active:text-[#52526b] duration-700 hover:cursor-pointer shadow-lg p-2">
-            <BookmarkCheck strokeWidth={1} />
-            <button className="hover:cursor-pointer">Ok</button>
+        ) : (
+          <div className="w-full flex items-center gap-2 mr-2 text-[#8A8BE4] justify-center mt-5 ">
+            <div
+              onClick={() => {
+                setEditProfile(false);
+              }}
+              className="w-25 justify-center flex items-center gap-2 active:text-[#52526b] duration-700 hover:cursor-pointer shadow-lg p-2"
+            >
+              <BookmarkX strokeWidth={1} />
+              <button className="hover:cursor-pointer">Cancle</button>
+            </div>
+            <div
+              onClick={() => {
+                setEditProfile(false);
+              }}
+              className="w-25 justify-center flex items-center gap-2 active:text-[#52526b] duration-700 hover:cursor-pointer shadow-lg p-2"
+            >
+              <BookmarkCheck strokeWidth={1} />
+              <button className="hover:cursor-pointer">Ok</button>
+            </div>
           </div>
-        </div>
+        )}
       </div>
       <div className="w-full flex items-center text-[#8A8BE4] justify-end mt-2 p-2">
         <div className="w-35 mr-5 justify-center flex items-center gap-2 active:text-[#52526b] duration-700 hover:cursor-pointer shadow-xl p-2">
