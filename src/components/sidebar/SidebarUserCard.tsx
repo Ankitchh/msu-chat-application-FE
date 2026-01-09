@@ -1,32 +1,25 @@
 // import { UserRound } from "lucide-react";
-import { useRoomContext } from "../../contexts/roomContext";
+import type { SingleChatRoom } from "../../contexts/roomContext";
 import { useSelectedRoom } from "../../contexts/selectedRoomContext";
 import { useUser } from "../../contexts/userContext";
 
-const SidebarUserCard = () => {
-  const { singleChatRoom, loading } = useRoomContext();
+interface Props {
+  rooms: SingleChatRoom[];
+}
+
+const SidebarUserCard = ({ rooms }: Props) => {
   const { setSelectedRoom } = useSelectedRoom();
-
-  const openRoom = (
-    roomId: string,
-    imageUrl: string,
-    name: string,
-    type: string
-  ) => {
-    setSelectedRoom({ roomId, imageUrl, name, type });
-  };
-
   const { user } = useUser();
-  // console.log(user);
 
-  if (loading) {
-    return <div className="w-full p-3 text-2xl">Loading...</div>;
-  }
+  const openRoom = (roomId: string, imageUrl: string, name: string) => {
+    setSelectedRoom({ roomId, imageUrl, name, type: "single" });
+  };
   return (
     <>
-      {singleChatRoom.map((room) => (
+      {rooms.map((room) => (
         <div
-          onClick={() => {
+          key={room.id}
+          onClick={() =>
             openRoom(
               room.id,
               user?.name === room.receiver.name
@@ -34,11 +27,9 @@ const SidebarUserCard = () => {
                 : room.receiver.imageUrl,
               user?.name === room.receiver.name
                 ? room.sender.name
-                : room.receiver.name,
-              "single"
-            );
-          }}
-          key={room.id}
+                : room.receiver.name
+            )
+          }
           className="sidebar-user-list-user-card w-full h-2/12 p-1 hover:bg-[#484D73] border-b border-[#484D73] pb-2"
         >
           <div className="user-card-user-details w-full h-3/4  p-0.5 flex gap-2 items-center">

@@ -1,29 +1,29 @@
 import { UserRound } from "lucide-react";
 
-import { useRoomContext } from "../../contexts/roomContext";
 import { useSelectedRoom } from "../../contexts/selectedRoomContext";
+import type { GroupChatRoom } from "../../contexts/roomContext";
 
-const SidebarGroupCard = () => {
-  const { groupChatRoom, loading } = useRoomContext();
 
+interface Props {
+  rooms: GroupChatRoom[];
+}
+
+const SidebarGroupCard = ({ rooms }: Props) => {
   const { setSelectedRoom } = useSelectedRoom();
-
-  const openRoom = (roomId: string, name: string, type: string) => {
-    setSelectedRoom({ roomId, imageUrl: null, name, type });
-  };
-
-  if (loading) {
-    return <div></div>;
-  }
 
   return (
     <>
-      {groupChatRoom.map((room) => (
+      {rooms.map((room) => (
         <div
-          onClick={() => {
-            openRoom(room.id, room.roomName, "group");
-          }}
           key={room.id}
+          onClick={() =>
+            setSelectedRoom({
+              roomId: room.id,
+              imageUrl: null,
+              name: room.roomName,
+              type: "group",
+            })
+          }
           className="sidebar-group-list-group-card w-full h-2/12 p-1 hover:bg-[#484D73] border-b border-[#484D73] pb-2"
         >
           <div className="group-card-group-details w-full h-3/4  p-0.5 flex gap-2 items-center">

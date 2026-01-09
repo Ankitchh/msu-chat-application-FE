@@ -2,11 +2,15 @@ import { ChevronLeft } from "lucide-react";
 import { useUser } from "../../contexts/userContext";
 import FacultyUserProfile from "./FacultyUserProfile";
 import StudentUserProfile from "./StudentUserProfile";
+import CurrentChatProfile from "./CurrentChatProfile";
+import { useProfileType } from "../../contexts/profileTypeContext";
 
 const UserProfile = ({settings, SetSettings}: {settings: boolean, SetSettings: React.Dispatch<React.SetStateAction<boolean>>}) => {
 
   const { user } = useUser();
+  const { profileType } = useProfileType();
 
+  
 
 if (!user) {
     return (
@@ -18,7 +22,6 @@ if (!user) {
         </div>
     );
   }
-
   return (
     <div
       className={`h-screen ${
@@ -34,10 +37,13 @@ if (!user) {
         </button>
         <div className="text-xl">Profile</div>
       </div>
-      {user?.userRole === "STUDENT" ? (
+      {profileType === "own" ? (
+      user?.userRole === "STUDENT" ? (
         <StudentUserProfile />
       ) : (
         <FacultyUserProfile />
+      )) : (
+        <CurrentChatProfile />
       )}
     </div>
   );

@@ -2,12 +2,30 @@ import { Settings, UserRoundSearch } from "lucide-react";
 import SidebarUserCard from "./SidebarUserCard";
 import SidebarGroupCard from "./SidebarGroupCard";
 import NewChat from "../newChat/NewChat";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import UserProfile from "../profile/UserProfile";
+import { useRoomContext } from "../../contexts/roomContext";
+import { fuzzyMatch } from "../../utils/fuzzyMatch";
+
 
 const Sidebar = () => {
   const [openNewChat, setOpenNewChat] = useState<string>("open");
   const [settings, SetSettings] = useState<boolean>(false);
+
+  const { singleChatRoom, groupChatRoom, loading } = useRoomContext();
+  const [search, setSearch] = useState("");
+
+  const filteredSingleChats = useMemo(() => {
+    return singleChatRoom.filter((room) =>
+      fuzzyMatch(`${room.sender.name} ${room.receiver.name}`, search)
+    );
+  }, [singleChatRoom, search]);
+
+  const filteredGroupChats = useMemo(() => {
+    return groupChatRoom.filter((room) => fuzzyMatch(room.roomName, search));
+  }, [groupChatRoom, search]);
+
+
 
   return (
     <>
@@ -15,7 +33,7 @@ const Sidebar = () => {
       <NewChat openNewChat={openNewChat} setOpenNewChat={setOpenNewChat} />
       <div
         className={`h-screen  ${
-          (openNewChat === "open" && !settings)
+          openNewChat === "open" && !settings
             ? "w-[23vw] p-2"
             : "w-0 overflow-hidden opacity-0"
         } 
@@ -51,8 +69,11 @@ const Sidebar = () => {
               <input
                 type="text"
                 placeholder="search user..."
-                className="w-full border-none bg-[#414568] rounded-full h-3/4 p-1.5 pl-4 focus:outline-none "
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                className="w-full border-none bg-[#414568] rounded-full h-3/4 p-1.5 pl-4 focus:outline-none"
               />
+
               <UserRoundSearch
                 strokeWidth={0.75}
                 className="absolute right-5"
@@ -61,10 +82,24 @@ const Sidebar = () => {
           </div>
         </div>
         <div className="sidebar-users-list w-full h-[73vh] overflow-auto scrollbar-hide">
-          <SidebarUserCard />
-          <SidebarGroupCard />
-          <div className="w-full h-20"></div>
+          {loading && <p className="text-center p-2">Loading...</p>}
+
+          {!loading && (
+            <>
+              <SidebarUserCard rooms={filteredSingleChats} />
+              <SidebarGroupCard rooms={filteredGroupChats} />
+
+              {filteredSingleChats.length === 0 &&
+                filteredGroupChats.length === 0 && (
+                  <p className="text-center text-sm text-slate-400 mt-5">
+                    No chat rooms found
+                  </p>
+                )}
+            </>
+          )}
+        <div className="w-full h-20"></div>
         </div>
+
         <div
           onClick={() => {
             SetSettings(true);

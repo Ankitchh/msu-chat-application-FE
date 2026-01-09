@@ -1,15 +1,17 @@
-import { CircleSmall, Ellipsis } from "lucide-react";
+import { CircleSmall } from "lucide-react";
 import { useSelectedRoom } from "../../contexts/selectedRoomContext";
 
 const ChatInterfaceUserHeader = () => {
+
   const { selectedRoom } = useSelectedRoom();
+  
   if (selectedRoom === null) {
     return <div></div>;
   }
 
   return (
     <div className="chat-interface-header w-full h-[10vh]  flex items-center justify-between border-b border-[#484D73]">
-      <div className="chat-interface-header-user-detals w-1/4 h-full  flex items-center gap-3">
+      <div className="chat-interface-header-user-detals w-1/4 h-full  flex items-center gap-3 hover:cursor-pointer pl-2 ">
         <div className="chat-interface-headeruser-details-avtar relative w-[24%] h-full p-2  rounded-full flex items-center justify-between">
           {/* <UserRound strokeWidth={0.75} className="w-full h-full" /> */}
           <img
@@ -36,9 +38,6 @@ const ChatInterfaceUserHeader = () => {
             <h2 className="text-sm text-slate-400">Active Now</h2>
           </div>
         </div>
-      </div>
-      <div className="chat-interface-header-user-options w-1/4 h-full  flex justify-end items-center pr-3 ">
-        <Ellipsis strokeWidth={2} className="hover:cursor-pointer" />
       </div>
     </div>
   );
