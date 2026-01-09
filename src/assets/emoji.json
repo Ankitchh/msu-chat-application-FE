@@ -1,0 +1,124 @@
+{
+  "education": {
+    "label": "Education & Learning",
+    "emojis": [
+      {
+        "symbol": "📚",
+        "name": "books",
+        "keywords": ["study", "library", "reading"]
+      },
+      { "symbol": "📖", "name": "open_book", "keywords": ["learn", "read"] },
+      {
+        "symbol": "📝",
+        "name": "memo",
+        "keywords": ["notes", "exam", "write"]
+      },
+      { "symbol": "✏️", "name": "pencil", "keywords": ["write", "edit"] },
+      {
+        "symbol": "🎓",
+        "name": "graduation_cap",
+        "keywords": ["graduate", "degree"]
+      },
+      { "symbol": "🏫", "name": "school", "keywords": ["campus", "class"] },
+      {
+        "symbol": "🧠",
+        "name": "brain",
+        "keywords": ["thinking", "knowledge"]
+      },
+      { "symbol": "💡", "name": "idea", "keywords": ["idea", "solution"] }
+    ]
+  },
+
+  "chat": {
+    "label": "Communication",
+    "emojis": [
+      {
+        "symbol": "💬",
+        "name": "speech_balloon",
+        "keywords": ["chat", "message"]
+      },
+      {
+        "symbol": "🗣️",
+        "name": "speaking_head",
+        "keywords": ["announce", "speak"]
+      },
+      { "symbol": "📢", "name": "loudspeaker", "keywords": ["announcement"] },
+      { "symbol": "❓", "name": "question", "keywords": ["question", "doubt"] },
+      {
+        "symbol": "❗",
+        "name": "exclamation",
+        "keywords": ["important", "alert"]
+      },
+      {
+        "symbol": "🔔",
+        "name": "notification",
+        "keywords": ["alert", "notice"]
+      }
+    ]
+  },
+
+  "people": {
+    "label": "Students & Staff",
+    "emojis": [
+      { "symbol": "👩‍🎓", "name": "female_student", "keywords": ["student"] },
+      { "symbol": "👨‍🎓", "name": "male_student", "keywords": ["student"] },
+      { "symbol": "🧑‍🎓", "name": "student", "keywords": ["learner"] },
+      {
+        "symbol": "👩‍🏫",
+        "name": "female_teacher",
+        "keywords": ["teacher", "professor"]
+      },
+      { "symbol": "👨‍🏫", "name": "male_teacher", "keywords": ["teacher"] },
+      {
+        "symbol": "🤝",
+        "name": "handshake",
+        "keywords": ["agreement", "collaboration"]
+      }
+    ]
+  },
+
+  "schedule": {
+    "label": "Schedule & Tasks",
+    "emojis": [
+      { "symbol": "📅", "name": "calendar", "keywords": ["date", "event"] },
+      {
+        "symbol": "⏰",
+        "name": "alarm_clock",
+        "keywords": ["time", "deadline"]
+      },
+      { "symbol": "📌", "name": "pushpin", "keywords": ["important", "pin"] },
+      {
+        "symbol": "✔️",
+        "name": "check_mark",
+        "keywords": ["done", "completed"]
+      },
+      { "symbol": "🔄", "name": "refresh", "keywords": ["update", "repeat"] }
+    ]
+  },
+
+  "files": {
+    "label": "Files & Resources",
+    "emojis": [
+      { "symbol": "📁", "name": "folder", "keywords": ["directory", "files"] },
+      { "symbol": "📄", "name": "document", "keywords": ["file", "paper"] },
+      { "symbol": "📎", "name": "paperclip", "keywords": ["attach"] },
+      { "symbol": "⬆️", "name": "upload", "keywords": ["send"] },
+      { "symbol": "⬇️", "name": "download", "keywords": ["receive"] }
+    ]
+  },
+
+  "reactions": {
+    "label": "Reactions",
+    "emojis": [
+      { "symbol": "👍", "name": "thumbs_up", "keywords": ["approve", "ok"] },
+      { "symbol": "👌", "name": "ok_hand", "keywords": ["fine"] },
+      {
+        "symbol": "🙏",
+        "name": "thank_you",
+        "keywords": ["thanks", "respect"]
+      },
+      { "symbol": "👏", "name": "clap", "keywords": ["appreciation"] },
+      { "symbol": "😊", "name": "smile", "keywords": ["happy", "polite"] }
+    ]
+  }
+}

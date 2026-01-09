@@ -51,7 +51,7 @@ const ChatBoxGroup = () => {
         </div>
         <div className="chat-interface-chatbox-recived-messageTime max-w-5/12">
           <div className="chat-interface-chatbox-recived-from mb-1 pt-1">
-            <h4 className="text-xs"> +91 1234567890</h4>
+            <h4 className="text-xs"> Sarah Williams</h4>
           </div>
           <div className="chat-interface-chatbox-recived-message w-fit bg-[#4B4B6D] p-4 rounded-t-2xl rounded-r-2xl">
             <h3>Hi there! ...
