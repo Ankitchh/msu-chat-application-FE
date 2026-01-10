@@ -1,44 +1,72 @@
-import { CircleSmall, Ellipsis } from "lucide-react";
+import { Ellipsis } from "lucide-react";
+import { useState } from "react";
 import { useSelectedRoom } from "../../contexts/selectedRoomContext";
+import { useUser } from "../../contexts/userContext";
+import socket from "../../api/socket";
 
-const ChatInterfaceUserHeader = () => {
+const ChatInterfaceUserHeader = ({
+  isBlocked,
+  setIsBlocked,
+}: {
+  isBlocked: boolean;
+  setIsBlocked: React.Dispatch<React.SetStateAction<boolean>>;
+}) => {
   const { selectedRoom } = useSelectedRoom();
-  if (selectedRoom === null) {
-    return <div></div>;
-  }
+  const { user } = useUser();
+
+  const [showMenu, setShowMenu] = useState(false);
+
+  if (!selectedRoom || !user) return <div />;
+
+  const handleBlockToggle = () => {
+    if (selectedRoom.type !== "single") return;
+
+    socket.emit("block", {
+      roomId: selectedRoom.roomId,
+      status: isBlocked ? "unblock" : "block",
+    });
+
+    setIsBlocked(!isBlocked);
+    setShowMenu(false);
+  };
 
   return (
-    <div className="chat-interface-header w-full h-[10vh]  flex items-center justify-between border-b border-[#484D73]">
-      <div className="chat-interface-header-user-detals w-1/4 h-full  flex items-center gap-3">
-        <div className="chat-interface-headeruser-details-avtar relative w-[24%] h-full p-2  rounded-full flex items-center justify-between">
-          {/* <UserRound strokeWidth={0.75} className="w-full h-full" /> */}
-          <img
-            src={
-              selectedRoom.imageUrl
-                ? selectedRoom.imageUrl
-                : "https://avatars.githubusercontent.com/u/64682052?v=4"
-            }
-            alt="User profile"
-            className="w-full h-full rounded-full"
-          />
-          <span className="absolute top-1 right-1">
-            <CircleSmall
-              strokeWidth={5}
-              className="border-none text-green-400"
-            />
-          </span>
-        </div>
-        <div className="chat-interface-header-user-name-status">
-          <div className="chat-interface-header-user-name">
-            <h1 className="text-xl">{selectedRoom.name}</h1>
-          </div>
-          <div className="chat-interface-header-user-status">
-            <h2 className="text-sm text-slate-400">Active Now</h2>
-          </div>
+    <div className="chat-interface-header w-full h-[10vh] flex items-center justify-between border-b border-[#484D73]">
+      {/* LEFT */}
+      <div className="flex items-center gap-3 pl-2">
+        <img
+          src={
+            selectedRoom.imageUrl ??
+            "https://avatars.githubusercontent.com/u/64682052?v=4"
+          }
+          className="w-12 h-12 rounded-full"
+        />
+        <div>
+          <h1 className="text-xl">{selectedRoom.name}</h1>
+          <h2 className="text-sm text-slate-400">
+            {isBlocked ? "Blocked" : "typing..."}
+          </h2>
         </div>
       </div>
-      <div className="chat-interface-header-user-options w-1/4 h-full  flex justify-end items-center pr-3 ">
-        <Ellipsis strokeWidth={2} className="hover:cursor-pointer" />
+
+      {/* RIGHT */}
+      <div className="relative px-4">
+        <button onClick={() => setShowMenu(!showMenu)}>
+          <Ellipsis />
+        </button>
+
+        {showMenu && (
+          <div className="absolute right-0 mt-2 w-32 bg-[#414568] rounded shadow-xl z-50">
+            <button
+              onClick={handleBlockToggle}
+              className={`w-full px-3 py-2 text-left hover:bg-[#52526b] ${
+                isBlocked ? "text-green-400" : "text-red-400"
+              }`}
+            >
+              {isBlocked ? "Unblock" : "Block"}
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

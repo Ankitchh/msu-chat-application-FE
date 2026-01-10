@@ -7,17 +7,20 @@ import { ThemeProvider } from "./contexts/themeProvider.tsx";
 import { RoomProvider } from "./contexts/roomContext.tsx"
 import { UserProvider } from "./contexts/userContext.tsx";
 import { SelectedRoomProvider } from "./contexts/selectedRoomContext.tsx";
+import { ProfileTypeProvider } from "./contexts/profileTypeContext.tsx";
 
 createRoot(document.getElementById("root")!).render(
   // <StrictMode>
   <BrowserRouter basename="msu-chat-application-FE">
     
-      <ThemeProvider>
+    <ThemeProvider>
         <UserProvider>
         <RoomProvider>
+      <ProfileTypeProvider>
           <SelectedRoomProvider>
           <App />
           </SelectedRoomProvider>
+      </ProfileTypeProvider>
           </RoomProvider>
         </UserProvider>
       </ThemeProvider>

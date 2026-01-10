@@ -73,3 +73,34 @@ export const verifyOtpApi = async (otp: string) => {
     return;
   }
 };
+
+export const api = axios.create({
+  baseURL: `${BACKEND_URL}`,
+  // withCredentials: true, // 🔑 VERY IMPORTANT for session auth
+  headers: {
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${localStorage.getItem("token")}`,
+  },
+});
+
+
+
+
+export const logoutApi = async () => {
+  const token = localStorage.getItem("token");
+
+  if (!token) return;
+
+  const res = await axios.post(
+    `${BACKEND_URL}/auth/logout`,
+    { token }, // 👈 backend expects token in body
+    {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+
+  return res.data;
+};

@@ -1,4 +1,4 @@
-import { Ellipsis, UserRound } from "lucide-react";
+import {  UserRound } from "lucide-react";
 import { useSelectedRoom } from "../../contexts/selectedRoomContext";
 
 const ChatInterfaceGroupHeader = () => {
@@ -9,7 +9,7 @@ const ChatInterfaceGroupHeader = () => {
 
   return (
     <div className="chat-interface-header w-full h-[10vh]  flex items-center justify-between border-b border-[#484D73]">
-      <div className="chat-interface-header-user-detals w-1/4 h-full  flex items-center gap-3">
+      <div className="chat-interface-header-user-detals w-1/4 h-full  flex items-center gap-3 hover:cursor-pointer">
         <div className="chat-interface-headeruser-details-avtar relative w-[24%] h-full p-2  rounded-full flex items-center justify-between">
           <UserRound strokeWidth={0.75} className="w-full h-full" />
           {/* <img
@@ -27,9 +27,7 @@ const ChatInterfaceGroupHeader = () => {
           </div> */}
         </div>
       </div>
-      <div className="chat-interface-header-user-options w-1/4 h-full  flex justify-end items-center pr-3 ">
-        <Ellipsis strokeWidth={2} className="hover:cursor-pointer" />
-      </div>
+    
     </div>
   );
 };
