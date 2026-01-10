@@ -73,3 +73,12 @@ export const verifyOtpApi = async (otp: string) => {
     return;
   }
 };
+
+export const api = axios.create({
+  baseURL: `${BACKEND_URL}`,
+  // withCredentials: true, // 🔑 VERY IMPORTANT for session auth
+  headers: {
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${localStorage.getItem("token")}`,
+  },
+});
