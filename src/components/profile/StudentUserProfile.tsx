@@ -14,7 +14,7 @@
   };
 
   const StudentUserProfile = () => {
-    const { user, setUser } = useUser();
+    const { user, updateUser } = useUser();
     const [editProfile, setEditProfile] = useState(false);
     const [saving, setSaving] = useState(false);
 
@@ -22,7 +22,6 @@
 
     const [bioValue, setBioValue] = useState("");
     const [phoneValue, setPhoneValue] = useState("");
-    const {updateUser} = useUser();
 
     const token = localStorage.getItem("token");
 
