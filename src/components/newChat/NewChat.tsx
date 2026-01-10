@@ -7,6 +7,7 @@ import { useUser } from "../../contexts/userContext";
 import { useSelectedRoom } from "../../contexts/selectedRoomContext";
 import { fuzzyMatch } from "../../utils/fuzzyMatch";
 import socket from "../../api/socket";
+import { BACKEND_URL } from "../../api/auth";
 
 interface DbUser {
   id: string;
@@ -34,16 +35,16 @@ const NewChat = ({
   const token = localStorage.getItem("token");
 
   /* ---------------- EXISTING CHAT FILTER ---------------- */
-   const filteredUsers = useMemo(() => {
-     return singleChatRoom.filter((room) => {
-       const otherUserName =
-         user?.name === room.receiver.name
-           ? room.sender.name
-           : room.receiver.name;
+  const filteredUsers = useMemo(() => {
+    return singleChatRoom.filter((room) => {
+      const otherUserName =
+        user?.name === room.receiver.name
+          ? room.sender.name
+          : room.receiver.name;
 
-       return fuzzyMatch(otherUserName, search);
-     });
-   }, [singleChatRoom, search, user]);
+      return fuzzyMatch(otherUserName, search);
+    });
+  }, [singleChatRoom, search, user]);
 
   /* ---------------- DB SEARCH ---------------- */
   useEffect(() => {
@@ -61,14 +62,11 @@ const NewChat = ({
       try {
         setSearchingDb(true);
 
-        const res = await fetch(
-          `https://msu-chat-application.onrender.com/api/v1/user/find/${search}`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        const res = await fetch(`${BACKEND_URL}/user/find/${search}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
 
         if (!res.ok) {
           setDbUsers([]);

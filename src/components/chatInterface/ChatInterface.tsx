@@ -8,6 +8,7 @@ import ChatInterfaceUserHeader from "./ChatInterfaceUserHeader";
 import ChatInterfaceGroupHeader from "./ChatInterfaceGroupHeader";
 import emojiData from "../../assets/emoji.json";
 import socket from "../../api/socket";
+import { BACKEND_URL } from "../../api/auth";
 
 const ChatInterface = () => {
   const { selectedRoom } = useSelectedRoom();
@@ -51,7 +52,7 @@ const ChatInterface = () => {
     const fetchMessages = async () => {
       try {
         const res = await fetch(
-          `https://msu-chat-application.onrender.com/api/v1/user/messages/${selectedRoom.roomId}`,
+          `${BACKEND_URL}/user/messages/${selectedRoom.roomId}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,

@@ -1,6 +1,7 @@
 import { BookmarkCheck, BookmarkX, Pen } from "lucide-react";
 import { useUser } from "../../contexts/userContext";
 import { useState, useEffect } from "react";
+import { BACKEND_URL } from "../../api/auth";
 
 type User = {
   id: string;
@@ -40,20 +41,17 @@ const FacultyUserProfile = () => {
     try {
       setSaving(true);
 
-      const res = await fetch(
-        "https://msu-chat-application.onrender.com/api/v1/user/update-profile",
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({
-            bio: bioValue || "",
-            phone: phoneValue || "",
-          }),
-        }
-      );
+      const res = await fetch(`${BACKEND_URL}/user/update-profile`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          bio: bioValue || "",
+          phone: phoneValue || "",
+        }),
+      });
 
       if (!res.ok) throw new Error("Update failed");
 
