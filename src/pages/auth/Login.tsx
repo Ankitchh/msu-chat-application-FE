@@ -22,7 +22,8 @@ export default function Login() {
     const user = await loginApi(formData.email, formData.password);
     login(user);
     setIsLoading(false);
-    navigate("/");
+    navigate("/chat", { replace: true });
+
   };
 
   if (isLoading) {
