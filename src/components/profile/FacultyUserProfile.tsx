@@ -1,4 +1,4 @@
-import { BookmarkCheck, BookmarkX, LogOut, Pen } from "lucide-react";
+import { BookmarkCheck, BookmarkX, Pen } from "lucide-react";
 import { useUser } from "../../contexts/userContext";
 import { useState, useEffect } from "react";
 
