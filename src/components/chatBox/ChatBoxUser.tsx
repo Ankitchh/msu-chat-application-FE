@@ -5,11 +5,11 @@ const ChatBoxUser = ({ messages }: { messages: any[] }) => {
   const chatRef = useRef<HTMLDivElement | null>(null);
   const { user } = useUser();
 
-  // 🔽 Auto scroll
   useEffect(() => {
-    if (chatRef.current) {
-      chatRef.current.scrollTop = chatRef.current.scrollHeight;
-    }
+    chatRef.current?.scrollTo({
+      top: chatRef.current.scrollHeight,
+      behavior: "smooth",
+    });
   }, [messages]);
 
   return (
@@ -43,7 +43,15 @@ const ChatBoxUser = ({ messages }: { messages: any[] }) => {
                   isSender ? "text-right" : "text-left"
                 }`}
               >
-                {new Date(msg.createdAt).toLocaleTimeString()}
+                {msg.createdAt
+                  ? new Date(msg.createdAt).toLocaleTimeString([], {
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    })
+                  : new Date().toLocaleTimeString([], {
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    })}
               </div>
             </div>
           </div>

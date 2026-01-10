@@ -42,20 +42,9 @@ const SidebarGroupCard = ({ rooms }: Props) => {
                 {room.roomName}
               </h2>
             </div>
-            <div className="group-card-group-details-lastActive w-3/12 h-full  text-sm">
-              <h3 className="w-full h-full flex items-center justify-start pl-1 text-slate-400">
-                5 min ago
-              </h3>
-            </div>
+           
           </div>
-          <div className="group-card-message w-full h-1/4 text-xs px-2 flex items-center justify-between ">
-            <h3 className="w-[90%] text-slate-400 ">
-              +91 1234567890: Hello Sir
-            </h3>
-            <p className="bg-red-300 min-w-4 text-center min-h-4 rounded-full p-1 ">
-              10
-            </p>
-          </div>
+         
         </div>
       ))}
     </>

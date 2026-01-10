@@ -11,6 +11,7 @@ const ChatBoxGroup = ({ messages }: { messages: any[] }) => {
       chatRef.current.scrollTop = chatRef.current.scrollHeight;
     }
   }, [messages]);
+  
 
   return (
     <div
@@ -53,7 +54,15 @@ const ChatBoxGroup = ({ messages }: { messages: any[] }) => {
                   isSender ? "text-right" : "text-left"
                 }`}
               >
-                {new Date(msg.createdAt).toLocaleTimeString()}
+                {msg.createdAt
+                  ? new Date(msg.createdAt).toLocaleTimeString([], {
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    })
+                  : new Date().toLocaleTimeString([], {
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    })}
               </div>
             </div>
           </div>
