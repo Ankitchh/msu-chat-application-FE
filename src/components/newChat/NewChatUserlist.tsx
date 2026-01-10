@@ -1,7 +1,7 @@
 import type { SingleChatRoom } from "../../contexts/roomContext";
 import { useSelectedRoom } from "../../contexts/selectedRoomContext";
 import { useUser } from "../../contexts/userContext";
-
+import socket from "../../api/socket";
 interface Props {
   rooms: SingleChatRoom[];
 }
@@ -10,9 +10,14 @@ const NewChatUserlist = ({ rooms }: Props) => {
   const { setSelectedRoom } = useSelectedRoom();
   const { user } = useUser();
 
-  const openRoom = (roomId: string, imageUrl: string, name: string) => {
-    setSelectedRoom({ roomId, imageUrl, name, type: "single" });
-  };
+ const openRoom = (roomId: string, imageUrl: string, name: string) => {
+   // ✅ join socket room
+   socket.emit("joinRoom", { roomId });
+
+   // ✅ update app state
+   setSelectedRoom({ roomId, imageUrl, name, type: "single" });
+ };
+
 
   return (
     <>

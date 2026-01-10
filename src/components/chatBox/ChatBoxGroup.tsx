@@ -1,65 +1,22 @@
 import { UserRound } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
-import { useSelectedRoom } from "../../contexts/selectedRoomContext";
+import { useEffect, useRef } from "react";
 import { useUser } from "../../contexts/userContext";
 
-const ChatBoxGroup = () => {
+const ChatBoxGroup = ({ messages }: { messages: any[] }) => {
   const chatRef = useRef<HTMLDivElement | null>(null);
-  const { selectedRoom } = useSelectedRoom();
   const { user } = useUser();
 
-  const [messages, setMessages] = useState<any[]>([]);
-  const [loading, setLoading] = useState(false);
-
-  const token = localStorage.getItem("token");
-
-  // 🔹 Fetch group messages (SAME API)
-  useEffect(() => {
-    if (!selectedRoom?.roomId || !token) return;
-
-    const fetchMessages = async () => {
-      setLoading(true);
-      try {
-        const res = await fetch(
-          `https://msu-chat-application.onrender.com/api/v1/user/messages/${selectedRoom.roomId}`,
-          {
-            method: "GET",
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-
-        const data = await res.json();
-        setMessages(data.chatRoomMessages || []);
-      } catch (err) {
-        console.error("Failed to fetch group messages", err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchMessages();
-  }, [selectedRoom?.roomId, token]);
-
-  // 🔽 Auto-scroll
   useEffect(() => {
     if (chatRef.current) {
       chatRef.current.scrollTop = chatRef.current.scrollHeight;
     }
   }, [messages]);
 
-  if (!selectedRoom) return null;
-
   return (
     <div
       ref={chatRef}
-      className="chat-interface-chatbox w-full h-[78vh] flex flex-col gap-2 overflow-y-auto mb-2 px-6 scrollbar-hide"
+      className="w-full h-[78vh] flex flex-col gap-2 overflow-y-auto mb-2 px-6 scrollbar-hide"
     >
-      {loading && (
-        <p className="text-center text-gray-400 text-sm">Loading...</p>
-      )}
-
       {messages.map((msg) => {
         const isSender = msg.senderId === user?.id;
 
@@ -72,15 +29,11 @@ const ChatBoxGroup = () => {
           >
             {!isSender && (
               <div className="w-6 h-6 mr-2 mt-2">
-                <UserRound
-                  strokeWidth={0.75}
-                  className="w-full h-full rounded-full bg-[#414568]"
-                />
+                <UserRound className="w-full h-full rounded-full bg-[#414568]" />
               </div>
             )}
 
             <div className="max-w-[60%]">
-              {/* Sender name (only for received) */}
               {!isSender && (
                 <p className="text-xs text-gray-400 mb-1">{msg.senderName}</p>
               )}

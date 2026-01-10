@@ -7,7 +7,6 @@ import UserProfile from "../profile/UserProfile";
 import { useRoomContext } from "../../contexts/roomContext";
 import { fuzzyMatch } from "../../utils/fuzzyMatch";
 
-
 const Sidebar = () => {
   const [openNewChat, setOpenNewChat] = useState<string>("open");
   const [settings, SetSettings] = useState<boolean>(false);
@@ -24,7 +23,6 @@ const Sidebar = () => {
   const filteredGroupChats = useMemo(() => {
     return groupChatRoom.filter((room) => fuzzyMatch(room.roomName, search));
   }, [groupChatRoom, search]);
-
 
 
   return (
@@ -97,7 +95,7 @@ const Sidebar = () => {
                 )}
             </>
           )}
-        <div className="w-full h-20"></div>
+          <div className="w-full h-20"></div>
         </div>
 
         <div

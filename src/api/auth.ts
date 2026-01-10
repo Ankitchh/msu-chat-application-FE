@@ -82,3 +82,25 @@ export const api = axios.create({
     Authorization: `Bearer ${localStorage.getItem("token")}`,
   },
 });
+
+
+
+
+export const logoutApi = async () => {
+  const token = localStorage.getItem("token");
+
+  if (!token) return;
+
+  const res = await axios.post(
+    `${BACKEND_URL}/auth/logout`,
+    { token }, // 👈 backend expects token in body
+    {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+
+  return res.data;
+};

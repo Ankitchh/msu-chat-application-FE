@@ -1,44 +1,9 @@
-import { useEffect, useRef, useState } from "react";
-import { useSelectedRoom } from "../../contexts/selectedRoomContext";
+import { useEffect, useRef } from "react";
 import { useUser } from "../../contexts/userContext";
 
-const ChatBoxUser = () => {
+const ChatBoxUser = ({ messages }: { messages: any[] }) => {
   const chatRef = useRef<HTMLDivElement | null>(null);
-  const { selectedRoom } = useSelectedRoom();
   const { user } = useUser();
-
-  const [messages, setMessages] = useState<any[]>([]);
-  const [loading, setLoading] = useState(false);
-
-  const token = localStorage.getItem("token");
-
-  useEffect(() => {
-    if (!selectedRoom?.roomId || !token) return;
-
-    const fetchMessages = async () => {
-      setLoading(true);
-      try {
-        const res = await fetch(
-          `https://msu-chat-application.onrender.com/api/v1/user/messages/${selectedRoom.roomId}`,
-          {
-            method: "GET",
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-
-        const data = await res.json();
-        setMessages(data.chatRoomMessages || []);
-      } catch (err) {
-        console.error("Failed to fetch messages", err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchMessages();
-  }, [selectedRoom?.roomId, token]);
 
   // 🔽 Auto scroll
   useEffect(() => {
@@ -47,17 +12,11 @@ const ChatBoxUser = () => {
     }
   }, [messages]);
 
-  if (!selectedRoom) return null;
-
   return (
     <div
       ref={chatRef}
       className="flex-1 overflow-y-auto px-4 py-2 scrollbar-hide"
     >
-      {loading && (
-        <p className="text-center text-gray-400 text-sm">Loading...</p>
-      )}
-
       {messages.map((msg) => {
         const isSender = msg.senderId === user?.id;
 

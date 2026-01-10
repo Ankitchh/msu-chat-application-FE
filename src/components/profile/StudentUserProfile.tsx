@@ -167,13 +167,7 @@ const StudentUserProfile = () => {
         )}
       </div>
 
-      {/* LOGOUT */}
-      <div className="w-full flex items-center text-[#8A8BE4] justify-end mt-2 p-2">
-        <div className="w-35 mr-5 flex items-center gap-2 hover:cursor-pointer shadow-xl p-2">
-          <LogOut strokeWidth={1} />
-          <button>Logout</button>
-        </div>
-      </div>
+     
     </>
   );
 };
