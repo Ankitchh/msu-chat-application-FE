@@ -88,7 +88,7 @@ export const RoomProvider = ({ children }:{children: ReactNode}) => {
          }
        );
 
-       console.log("API DATA ==>", fetchrooms.data);
+      //  console.log("API DATA ==>", fetchrooms.data);
 
        const data = fetchrooms.data;
        
