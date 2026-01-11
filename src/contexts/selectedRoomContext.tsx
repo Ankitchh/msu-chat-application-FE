@@ -1,10 +1,13 @@
-import { createContext, useContext, useState, type ReactNode  } from "react";
+import { createContext, useContext, useState, type ReactNode } from "react";
+import type { SingleChatRoom } from "./roomContext"; // Import your SingleChatRoom type
 
 interface SelectedRoom {
   roomId: string;
-imageUrl: string | null;
+  imageUrl: string | null;
   name: string;
   type: string;
+  otherUserId?: string; // Add this
+  roomData?: SingleChatRoom; // Store the full room data
 }
 
 interface SelectedRoomContextType {
@@ -15,8 +18,6 @@ interface SelectedRoomContextType {
 const SelectedRoomContext = createContext<SelectedRoomContextType | undefined>(
   undefined
 );
-
-
 
 export const SelectedRoomProvider = ({ children }: { children: ReactNode }) => {
   const [selectedRoom, setSelectedRoom] = useState<SelectedRoom | null>(null);

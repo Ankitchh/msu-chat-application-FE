@@ -9,6 +9,7 @@ export interface Person {
   imageUrl: string;
 }
 
+// Update this in your roomContext.tsx or create a separate utility
 export interface SingleChatRoom {
   id: string;
   senderId: string;
@@ -16,9 +17,13 @@ export interface SingleChatRoom {
   blocked: string | null;
   createdAt: string;
   updatedAt: string;
-
   sender: Person;
   receiver: Person;
+  
+  // Helper method to get other user's ID
+  getOtherUserId?: (currentUserId: string) => string;
+  // Helper method to get other user's data
+  getOtherUser?: (currentUserId: string) => Person;
 }
 
 

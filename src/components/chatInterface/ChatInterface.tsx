@@ -2,6 +2,7 @@ import { SendHorizontal, Smile } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { useSelectedRoom } from "../../contexts/selectedRoomContext";
 import { useUser } from "../../contexts/userContext";
+import { useRoomContext } from "../../contexts/roomContext";
 import ChatBoxUser from "../chatBox/ChatBoxUser";
 import ChatBoxGroup from "../chatBox/ChatBoxGroup";
 import ChatInterfaceUserHeader from "./ChatInterfaceUserHeader";
@@ -13,13 +14,63 @@ import { BACKEND_URL } from "../../api/auth";
 const ChatInterface = () => {
   const { selectedRoom } = useSelectedRoom();
   const { user } = useUser();
+  const { singleChatRoom } = useRoomContext();
   const inputRef = useRef<HTMLInputElement | null>(null);
 
   const [messages, setMessages] = useState<any[]>([]);
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
-  const [isBlocked, setIsBlocked] = useState(false);
+  const [isBlocked, setIsBlocked] = useState(false); // Current user blocked the other user
+  const [isBlockedByOther, setIsBlockedByOther] = useState(false); // Other user blocked current user
 
   const token = localStorage.getItem("token");
+
+  // Find the current room data
+  const currentRoomData = singleChatRoom.find(
+    (room) => room.id === selectedRoom?.roomId
+  );
+
+  // Get other user's ID
+  const otherUserId =
+    currentRoomData && user
+      ? currentRoomData.senderId === user.id
+        ? currentRoomData.receiverId
+        : currentRoomData.senderId
+      : null;
+
+  // Get block status from room data
+  const getBlockStatusFromRoom = () => {
+    if (!currentRoomData || !user || !otherUserId) {
+      return { isBlocked: false, isBlockedByOther: false };
+    }
+
+    const blockedField = currentRoomData.blocked;
+
+    // If no one is blocked
+    if (!blockedField) {
+      return { isBlocked: false, isBlockedByOther: false };
+    }
+
+    // Check if current user is blocked
+    if (blockedField === user.id) {
+      return { isBlocked: false, isBlockedByOther: true };
+    }
+
+    // Check if current user blocked the other user
+    if (blockedField === otherUserId) {
+      return { isBlocked: true, isBlockedByOther: false };
+    }
+
+    // Check partial matches (in case of partial IDs)
+    if (otherUserId && blockedField.includes(otherUserId)) {
+      return { isBlocked: true, isBlockedByOther: false };
+    }
+
+    if (blockedField.includes(user.id)) {
+      return { isBlocked: false, isBlockedByOther: true };
+    }
+
+    return { isBlocked: false, isBlockedByOther: false };
+  };
 
   // 🔹 Listen for incoming messages
   useEffect(() => {
@@ -32,10 +83,43 @@ const ChatInterface = () => {
     };
   }, []);
 
-  // 🔹 Listen for block/unblock (for BOTH users)
+  // 🔹 Listen for block/unblock events from socket - UPDATED for new format
   useEffect(() => {
-    const handleBlock = ({ status }: { status: "block" | "unblock" }) => {
-      setIsBlocked(status === "block");
+    const handleBlock = (data: any) => {
+      console.log("Block socket event:", data);
+
+      const status = data.status; // true for block, false for unblock
+      const blockedUserId = data.userId; // string ID of blocked user
+
+      console.log("Parsed:", {
+        status: status ? "block" : "unblock",
+        blockedUserId,
+        currentUserId: user?.id,
+        otherUserId,
+      });
+
+      if (!user || !blockedUserId) return;
+
+      // Determine who blocked whom
+      if (blockedUserId === user.id) {
+        // Current user was blocked/unblocked by someone else
+        setIsBlockedByOther(status); // true if blocked, false if unblocked
+        setIsBlocked(false); // Ensure this is false
+        console.log(
+          "Current user was",
+          status ? "blocked by" : "unblocked by",
+          "someone else"
+        );
+      } else if (blockedUserId === otherUserId) {
+        // Current user blocked/unblocked someone else
+        setIsBlocked(status); // true if blocked, false if unblocked
+        setIsBlockedByOther(false); // Ensure this is false
+        console.log(
+          "Current user",
+          status ? "blocked" : "unblocked",
+          "someone else"
+        );
+      }
     };
 
     socket.on("block", handleBlock);
@@ -43,9 +127,9 @@ const ChatInterface = () => {
     return () => {
       socket.off("block", handleBlock);
     };
-  }, []);
+  }, [user, otherUserId]);
 
-  // 🔹 Fetch messages when room changes
+  // 🔹 Fetch messages and update block status when room changes
   useEffect(() => {
     if (!selectedRoom?.roomId || !token) return;
 
@@ -68,11 +152,56 @@ const ChatInterface = () => {
     };
 
     fetchMessages();
-  }, [selectedRoom?.roomId, token]);
 
-  // 🔹 Send message (BLOCK ENFORCED)
+    // Update block status from room data
+    if (selectedRoom.type === "single" && currentRoomData && user) {
+      const { isBlocked: blockedStatus, isBlockedByOther: blockedByOther } =
+        getBlockStatusFromRoom();
+
+      console.log("Initial block status from room:", {
+        blockedStatus,
+        blockedByOther,
+        roomId: selectedRoom.roomId,
+        blockedField: currentRoomData.blocked,
+      });
+
+      setIsBlocked(blockedStatus);
+      setIsBlockedByOther(blockedByOther);
+    } else {
+      setIsBlocked(false);
+      setIsBlockedByOther(false);
+    }
+  }, [selectedRoom?.roomId, token, currentRoomData, user]);
+
+  // 🔹 Update block status when room data changes
+  useEffect(() => {
+    if (selectedRoom?.type === "single" && currentRoomData && user) {
+      const { isBlocked: blockedStatus, isBlockedByOther: blockedByOther } =
+        getBlockStatusFromRoom();
+
+      // Update if values changed
+      if (blockedStatus !== isBlocked || blockedByOther !== isBlockedByOther) {
+        console.log("Updating from room data:", {
+          blockedStatus,
+          blockedByOther,
+          previous: { isBlocked, isBlockedByOther },
+        });
+
+        setIsBlocked(blockedStatus);
+        setIsBlockedByOther(blockedByOther);
+      }
+    }
+  }, [currentRoomData, user, selectedRoom?.type]);
+
+  // 🔹 Send message (with block check)
   const sendMessage = () => {
-    if (isBlocked) return;
+    // Determine if messaging is disabled based on your conditions
+    const isMessagingDisabled = isBlocked || isBlockedByOther;
+
+    if (isMessagingDisabled) {
+      console.log("Cannot send message - blocked");
+      return;
+    }
 
     const message = inputRef.current?.value.trim();
     if (!message || !selectedRoom || !user) return;
@@ -89,12 +218,28 @@ const ChatInterface = () => {
   };
 
   const handleEmojiClick = (emoji: string) => {
-    if (!inputRef.current || isBlocked) return;
+    // Determine if messaging is disabled
+    const isMessagingDisabled = isBlocked || isBlockedByOther;
+
+    if (!inputRef.current || isMessagingDisabled) return;
     inputRef.current.value += emoji;
     inputRef.current.focus();
   };
 
   if (!selectedRoom) return null;
+
+  // Determine messaging status based on your conditions
+  const isMessagingDisabled = isBlocked || isBlockedByOther;
+
+  // Create appropriate message
+  let blockedMessage = "Messaging is disabled";
+  if (isBlocked && !isBlockedByOther) {
+    blockedMessage = "You have blocked this user";
+  } else if (!isBlocked && isBlockedByOther) {
+    blockedMessage = "This user has blocked you";
+  } else if (isBlocked && isBlockedByOther) {
+    blockedMessage = "Both users have blocked each other";
+  }
 
   return (
     <div className="chat-interface w-[77vw] h-screen bg-[#333657] text-white flex flex-col relative">
@@ -103,6 +248,7 @@ const ChatInterface = () => {
           <ChatInterfaceUserHeader
             isBlocked={isBlocked}
             setIsBlocked={setIsBlocked}
+            isBlockedByOther={isBlockedByOther}
           />
           <ChatBoxUser messages={messages} />
         </>
@@ -119,34 +265,38 @@ const ChatInterface = () => {
           <Smile
             strokeWidth={0.75}
             className={`cursor-pointer ${
-              isBlocked ? "opacity-40 cursor-not-allowed" : ""
+              isMessagingDisabled ? "opacity-40 cursor-not-allowed" : ""
             }`}
-            onClick={() => !isBlocked && setShowEmojiPicker((p) => !p)}
+            onClick={() =>
+              !isMessagingDisabled && setShowEmojiPicker((p) => !p)
+            }
           />
 
           <input
             ref={inputRef}
             type="text"
-            disabled={isBlocked}
+            disabled={isMessagingDisabled}
             placeholder={
-              isBlocked ? "You cannot send messages" : "Type a message..."
+              isMessagingDisabled ? blockedMessage : "Type a message..."
             }
             className="flex-1 bg-transparent outline-none text-lg disabled:opacity-50"
-            onKeyDown={(e) => e.key === "Enter" && sendMessage()}
+            onKeyDown={(e) =>
+              e.key === "Enter" && !isMessagingDisabled && sendMessage()
+            }
           />
 
           <SendHorizontal
             strokeWidth={0.75}
             className={`cursor-pointer ${
-              isBlocked ? "opacity-40 cursor-not-allowed" : ""
+              isMessagingDisabled ? "opacity-40 cursor-not-allowed" : ""
             }`}
-            onClick={!isBlocked ? sendMessage : undefined}
+            onClick={!isMessagingDisabled ? sendMessage : undefined}
           />
         </div>
       </div>
 
       {/* EMOJI PICKER */}
-      {showEmojiPicker && !isBlocked && (
+      {showEmojiPicker && !isMessagingDisabled && (
         <div className="absolute scrollbar-hide bottom-[12vh] left-[20vw] w-[320px] max-h-[250px] bg-[#2F3151] rounded-xl p-3 overflow-y-auto shadow-lg">
           {Object.values(emojiData).map((category: any) => (
             <div key={category.label} className="mb-3">

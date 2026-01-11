@@ -44,9 +44,8 @@ const Sidebar = () => {
               <img
                 src="./public/logo.svg"
                 alt="msu-logo"
-                className="w-3/4 h-3/4 mr-2"
+                className="w-14 h-3/4 mr-2"
               />
-              <h1>{"Messages(20)"}</h1>
             </div>
             <div className="sidebar-header-top-addUser text-[#8A8BE4] w-2/4 flex h-full justify-end items-center p-2 text-lg">
               <button
